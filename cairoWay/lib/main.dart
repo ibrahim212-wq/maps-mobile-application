@@ -1,38 +1,41 @@
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-import 'data/cairo_web_preview_data.dart';
-import 'core/platform/web_preview_state.dart';
-import 'mapbox_shim_io.dart' if (dart.library.html) 'mapbox_shim_web.dart' as mapbox;
-import 'routemind_app.dart';
-import 'providers/onboarding_state_provider.dart';
-import 'services/onboarding_service.dart';
+import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
+
+import 'app.dart';
+import 'core/constants/app_constants.dart';
+import 'shared/services/storage_service.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+    statusBarColor: Colors.transparent,
+    systemNavigationBarColor: Colors.transparent,
+  ));
+
   await dotenv.load(fileName: '.env');
-  final mapToken = dotenv.env['MAPBOX_ACCESS_TOKEN']?.trim() ?? '';
-  mapbox.setMapboxAccessTokenIfAny(kIsWeb ? null : mapToken);
-  if (kIsWeb) {
-    WebPreviewState.setActivePolyline(
-      CairoWebPreviewData.staticDemoRoute.coordinates,
-    );
+  final mapToken = AppConstants.mapboxToken;
+  if (!kIsWeb && mapToken.isNotEmpty) {
+    MapboxOptions.setAccessToken(mapToken);
   }
+
   try {
     await Firebase.initializeApp();
-  } on Object {
-    // Add Firebase config files and run FlutterFire when ready.
+  } catch (e) {
+    debugPrint('Firebase init skipped: $e');
   }
-  await Hive.initFlutter();
-  await Hive.openBox<dynamic>('routemind_cache');
-  final onboarding = await OnboardingService.create();
+
+  final storage = await StorageService.init();
+
   runApp(
     ProviderScope(
       overrides: [
-        onboardingServiceProvider.overrideWithValue(onboarding),
+        storageServiceProvider.overrideWithValue(storage),
       ],
       child: const RouteMindApp(),
     ),
