@@ -398,42 +398,54 @@ class _NavigationScreenState extends ConsumerState<NavigationScreen> {
   Future<bool?> _confirmEnd(double distanceToDest) async {
     return showDialog<bool>(
       context: context,
-      builder: (ctx) => Dialog(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        child: GlassContainer(
-          borderRadius: 28,
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('End navigation?',
-                  style: Theme.of(ctx).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold)),
-              const SizedBox(height: 12),
-              Text(
-                distanceToDest.isFinite
-                    ? "You're ${Fmt.distance(distanceToDest)} from your destination."
-                    : 'Are you sure you want to end the trip?',
-                style: Theme.of(ctx).textTheme.bodyMedium,
-              ),
-              const SizedBox(height: 24),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
+      builder: (ctx) => AlertDialog(
+        contentPadding: const EdgeInsets.all(24),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(24),
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('End navigation?',
+                style: Theme.of(ctx).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold)),
+            const SizedBox(height: 12),
+            Text(
+              distanceToDest.isFinite
+                  ? "You're ${Fmt.distance(distanceToDest)} from your destination."
+                  : 'Are you sure you want to end the trip?',
+              style: Theme.of(ctx).textTheme.bodyMedium,
+            ),
+            const SizedBox(height: 24),
+            ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: double.infinity),
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
                 children: [
                   TextButton(
                     onPressed: () => Navigator.of(ctx).pop(false),
-                    child: const Text('Continue navigating'),
+                    child: const Text(
+                      'Continue navigating',
+                      style: TextStyle(color: Color(0xFF00D26A)),
+                    ),
                   ),
                   const SizedBox(width: 8),
-                  FilledButton.tonal(
-                    onPressed: () => Navigator.of(ctx).pop(true),
-                    child: const Text('End trip'),
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () => Navigator.of(ctx).pop(true),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF00D26A),
+                      ),
+                      child: const Text(
+                        'End trip',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
                   ),
                 ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
