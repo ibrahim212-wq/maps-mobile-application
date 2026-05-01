@@ -402,7 +402,7 @@ class _NavigationScreenState extends ConsumerState<NavigationScreen> {
       builder: (ctx) => AlertDialog(
         backgroundColor: brightness == Brightness.dark
             ? const Color(0xFF0F2318)
-            : const Color(0xFFF0FFF6),
+            : const Color(0xAAF0F0F0),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(24),
         ),
@@ -1014,17 +1014,17 @@ class _NavigationScreenState extends ConsumerState<NavigationScreen> {
                   decoration: BoxDecoration(
                     color: brightness == Brightness.dark
                         ? const Color(0xEE0A1F14)
-                        : const Color(0xEEFFFFFF),
+                        : const Color(0xAAF0F0F0),
                     borderRadius: BorderRadius.circular(24),
                     border: Border.all(
-                      color: const Color(0x4400A854),
+                      color: const Color(0x33FFFFFF),
                       width: 1.5,
                     ),
                     boxShadow: const [
                       BoxShadow(
-                        color: Color(0x3300A854),
-                        blurRadius: 16,
-                        offset: Offset(0, 4),
+                        color: Color(0x1A000000),
+                        blurRadius: 10,
+                        offset: Offset(0, 2),
                       ),
                     ],
                   ),

@@ -520,6 +520,7 @@ class _CategoryChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
+    final brightness = Theme.of(context).brightness;
     return Padding(
       padding: const EdgeInsets.only(right: 8, top: 6, bottom: 6),
       child: ChoiceChip(
@@ -531,7 +532,9 @@ class _CategoryChip extends StatelessWidget {
           fontWeight: FontWeight.w600,
         ),
         selectedColor: scheme.primary,
-        backgroundColor: scheme.surfaceContainerHighest,
+        backgroundColor: brightness == Brightness.dark
+            ? scheme.surfaceContainerHighest
+            : const Color(0x88F0F0F0),
         side: BorderSide.none,
         showCheckmark: false,
       ),

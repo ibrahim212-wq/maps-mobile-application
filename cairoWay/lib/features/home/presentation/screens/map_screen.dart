@@ -280,7 +280,7 @@ class _MapScreenState extends ConsumerState<MapScreen> {
           // 4. Incident report pill (middle left, floating over map)
           Positioned(
             left: 16,
-            bottom: _peekClearance(context) + 16,
+            bottom: (mq.size.height * 0.42) + 16,
             child: GlassContainer.pill(
               padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
               onTap: _openIncidentSheet,
@@ -309,10 +309,17 @@ class _MapScreenState extends ConsumerState<MapScreen> {
               decoration: BoxDecoration(
                 color: Theme.of(context).brightness == Brightness.dark
                     ? const Color(0xFF0A1F14)
-                    : const Color(0xFFF5FFF9),
+                    : const Color(0xBBF0F0F0),
                 border: const Border(
-                  top: BorderSide(color: Color(0x2200A854), width: 1),
+                  top: BorderSide(color: Color(0x33FFFFFF), width: 1),
                 ),
+                boxShadow: const [
+                  BoxShadow(
+                    color: Color(0x1A000000),
+                    blurRadius: 10,
+                    offset: Offset(0, 2),
+                  ),
+                ],
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,

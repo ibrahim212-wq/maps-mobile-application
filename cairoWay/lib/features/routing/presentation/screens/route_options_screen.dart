@@ -377,15 +377,21 @@ class _RouteCardState extends State<_RouteCard> {
           decoration: BoxDecoration(
             color: brightness == Brightness.dark
                 ? const Color(0xCC0A1F14)
-                : const Color(0xCCFFFFFF),
+                : const Color(0x99F0F0F0),
             borderRadius: BorderRadius.circular(20),
             border: Border.all(
               color: selected
                   ? const Color(0xFF00A854)
-                  : Colors.transparent,
+                  : const Color(0x33FFFFFF),
               width: 1.5,
             ),
-            boxShadow: aiGlow,
+            boxShadow: aiGlow ?? const [
+              BoxShadow(
+                color: Color(0x1A000000),
+                blurRadius: 10,
+                offset: Offset(0, 2),
+              ),
+            ],
           ),
           child: Material(
             color: Colors.transparent,
