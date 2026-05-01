@@ -396,57 +396,45 @@ class _NavigationScreenState extends ConsumerState<NavigationScreen> {
   }
 
   Future<bool?> _confirmEnd(double distanceToDest) async {
+    final brightness = Theme.of(context).brightness;
     return showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        contentPadding: const EdgeInsets.all(24),
+        backgroundColor: brightness == Brightness.dark
+            ? const Color(0xFF0F2318)
+            : const Color(0xFFF0FFF6),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(24),
         ),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('End navigation?',
-                style: Theme.of(ctx).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold)),
-            const SizedBox(height: 12),
-            Text(
-              distanceToDest.isFinite
-                  ? "You're ${Fmt.distance(distanceToDest)} from your destination."
-                  : 'Are you sure you want to end the trip?',
-              style: Theme.of(ctx).textTheme.bodyMedium,
-            ),
-            const SizedBox(height: 24),
-            ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: double.infinity),
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  TextButton(
-                    onPressed: () => Navigator.of(ctx).pop(false),
-                    child: const Text(
-                      'Continue navigating',
-                      style: TextStyle(color: Color(0xFF00D26A)),
-                    ),
-                  ),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: () => Navigator.of(ctx).pop(true),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF00D26A),
-                      ),
-                      child: const Text(
-                        'End trip',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                  ),
-                ],
+        title: Text(
+          'End navigation',
+          style: Theme.of(ctx).textTheme.titleLarge?.copyWith(
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
               ),
-            ),
-          ],
         ),
+        content: Text(
+          distanceToDest.isFinite
+              ? "You're ${Fmt.distance(distanceToDest)} from your destination."
+              : 'Are you sure you want to end the trip?',
+          style: Theme.of(ctx).textTheme.bodyMedium,
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(false),
+            child: const Text(
+              'Continue navigating',
+              style: TextStyle(color: Color(0xFF00A854)),
+            ),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(true),
+            child: const Text(
+              'End trip',
+              style: TextStyle(color: Color(0xFFCC3333)),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -1029,12 +1017,12 @@ class _NavigationScreenState extends ConsumerState<NavigationScreen> {
                         : const Color(0xEEFFFFFF),
                     borderRadius: BorderRadius.circular(24),
                     border: Border.all(
-                      color: const Color(0x4400D26A),
+                      color: const Color(0x4400A854),
                       width: 1.5,
                     ),
                     boxShadow: const [
                       BoxShadow(
-                        color: Color(0x3300D26A),
+                        color: Color(0x3300A854),
                         blurRadius: 16,
                         offset: Offset(0, 4),
                       ),
@@ -1211,24 +1199,17 @@ class _NavigationScreenState extends ConsumerState<NavigationScreen> {
                     );
                   }
                 },
-                child: Container(
-                  width: 52,
-                  height: 52,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: const Color(0xFF00D26A),
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Color(0x6600D26A),
-                        blurRadius: 16,
-                        spreadRadius: 2,
-                      ),
-                    ],
-                  ),
-                  child: const Icon(
-                    Icons.my_location_rounded,
-                    color: Colors.white,
-                    size: 24,
+                child: GlassContainer(
+                  width: 48,
+                  height: 48,
+                  borderRadius: 16,
+                  padding: EdgeInsets.zero,
+                  child: const Center(
+                    child: Icon(
+                      Icons.my_location_rounded,
+                      color: Color(0xFF00A854),
+                      size: 24,
+                    ),
                   ),
                 ),
               ).animate().scale(

@@ -69,6 +69,7 @@ class MapFloatingControls extends StatelessWidget {
               highlighted: true,
               onTap: onRecenter,
               size: btnSize,
+              label: 'recenter',
             ),
           ],
         ).animate().fadeIn(delay: 200.ms, duration: 400.ms).slideX(begin: 0.2);
@@ -86,6 +87,7 @@ class _IconButton extends StatelessWidget {
     this.active = false,
     this.highlighted = false,
     this.smallIcon = false,
+    this.label,
   });
   final IconData icon;
   final VoidCallback onTap;
@@ -94,6 +96,7 @@ class _IconButton extends StatelessWidget {
   final bool active;
   final bool highlighted;
   final bool smallIcon;
+  final String? label;
 
   @override
   Widget build(BuildContext context) {
@@ -109,7 +112,24 @@ class _IconButton extends StatelessWidget {
         onTap();
       },
       child: Center(
-        child: Icon(icon, color: color, size: smallIcon ? 16 : 24),
+        child: label != null
+            ? Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(icon, color: const Color(0xFF00A854), size: 20),
+                  const SizedBox(height: 2),
+                  Text(
+                    label!,
+                    style: const TextStyle(
+                      fontSize: 8,
+                      color: Color(0xFF00A854),
+                      height: 1,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
+              )
+            : Icon(icon, color: color, size: smallIcon ? 16 : 24),
       ),
     );
     return tooltip == null ? btn : Tooltip(message: tooltip!, child: btn);

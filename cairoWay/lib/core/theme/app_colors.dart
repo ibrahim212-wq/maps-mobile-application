@@ -53,7 +53,7 @@ class AppColors {
   static const Color darkSurfaceElevated = Color(0xFF0F172A);
 
   /// Primary accent — vibrant emerald green
-  static const Color darkPrimary = Color(0xFF00D26A);
+  static const Color darkPrimary = Color(0xFF00A854);
 
   /// Secondary accent — deeper emerald
   static const Color darkSecondary = Color(0xFF008F48);
@@ -77,7 +77,7 @@ class AppColors {
   // TRAFFIC SEMANTIC COLORS — Universal System
   // ═══════════════════════════════════════════════════════════════════════
   
-  static const Color trafficFree = Color(0xFF00D26A);        // Emerald green
+  static const Color trafficFree = Color(0xFF00A854);        // Emerald green
   static const Color trafficLight = Color(0xFF84CC16);       // Fresh lime
   static const Color trafficModerate = Color(0xFFFF9800);    // Amber
   static const Color trafficHeavy = Color(0xFFF44336);       // Red
@@ -87,10 +87,10 @@ class AppColors {
   // STATUS & ALERT COLORS
   // ═══════════════════════════════════════════════════════════════════════
   
-  static const Color success = Color(0xFF00D26A);            // Emerald green
+  static const Color success = Color(0xFF00A854);            // Emerald green
   static const Color warning = Color(0xFFD9A441);            // Gold
   static const Color error = Color(0xFFF44336);              // Modern red
-  static const Color info = Color(0xFF00D26A);               // Emerald green
+  static const Color info = Color(0xFF00A854);               // Emerald green
 
   // ═══════════════════════════════════════════════════════════════════════
   // PREMIUM GRADIENTS — Emerald Green System
@@ -100,7 +100,7 @@ class AppColors {
   static const LinearGradient primaryGradient = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
-    colors: [Color(0x9900D26A), Color(0x99008F48)],
+    colors: [Color(0x9900A854), Color(0x99008F48)],
   );
   
   /// AI/Premium gradient with gold accent
@@ -114,7 +114,7 @@ class AppColors {
   static const LinearGradient premiumGradient = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
-    colors: [Color(0x9900D26A), Color(0x99D9A441)],
+    colors: [Color(0x9900A854), Color(0x99D9A441)],
   );
   
   /// Dark mode hero gradient — deep emerald tones
@@ -128,7 +128,7 @@ class AppColors {
   static const LinearGradient accentGradient = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
-    colors: [Color(0x9900D26A), Color(0x9910B981)],
+    colors: [Color(0x9900A854), Color(0x9910B981)],
   );
 
   // ═══════════════════════════════════════════════════════════════════════
@@ -138,7 +138,7 @@ class AppColors {
   /// Glass panel glow color — subtle emerald tint
   static Color glassGlow(Brightness brightness) =>
       brightness == Brightness.dark
-          ? const Color(0xFF00D26A).withValues(alpha: 0.05)
+          ? const Color(0xFF00A854).withValues(alpha: 0.05)
           : Colors.transparent;
 
   /// Primary glass gradient — matches reference image exactly
@@ -178,7 +178,7 @@ class AppColors {
   /// Accent glass border — emerald for selected/highlighted states
   static Color glassBorderAccent(Brightness brightness) =>
       brightness == Brightness.dark
-          ? const Color(0xFF00D26A).withValues(alpha: 0.60)
+          ? const Color(0xFF00A854).withValues(alpha: 0.60)
           : const Color(0xFF059669).withValues(alpha: 0.50);
 
   /// Premium layered shadow system with emerald glow
@@ -192,7 +192,7 @@ class AppColors {
         ),
         if (brightness == Brightness.dark)
           BoxShadow(
-            color: const Color(0xFF00D26A).withValues(alpha: 0.05),
+            color: const Color(0xFF00A854).withValues(alpha: 0.05),
             blurRadius: 20,
             offset: Offset.zero,
           ),

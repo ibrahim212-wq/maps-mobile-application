@@ -300,13 +300,20 @@ class _MapScreenState extends ConsumerState<MapScreen> {
           const HomeBottomSheet(bottomNavHeight: _bottomNavHeight),
           // 6. Bottom navigation bar (very bottom, floating over map)
           Positioned(
-            left: 16,
-            right: 16,
-            bottom: mq.padding.bottom + 16,
-            child: GlassContainer(
-              borderRadius: 28,
-              height: _bottomNavHeight,
-              padding: EdgeInsets.zero,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            child: Container(
+              height: _bottomNavHeight + mq.padding.bottom,
+              padding: EdgeInsets.only(bottom: mq.padding.bottom),
+              decoration: BoxDecoration(
+                color: Theme.of(context).brightness == Brightness.dark
+                    ? const Color(0xFF0A1F14)
+                    : const Color(0xFFF5FFF9),
+                border: const Border(
+                  top: BorderSide(color: Color(0x2200A854), width: 1),
+                ),
+              ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
@@ -349,11 +356,7 @@ class _MapScreenState extends ConsumerState<MapScreen> {
   /// overlap the greeting card.
   double _peekClearance(BuildContext context) {
     final mq = MediaQuery.of(context);
-    final reservedBottom = _bottomNavHeight + mq.padding.bottom;
-    final viewport = mq.size.height - mq.padding.top;
-    final peekContentHeight = 280.0;
-    final minSize = (peekContentHeight + reservedBottom) / viewport;
-    return minSize * mq.size.height;
+    return 0.28 * mq.size.height;
   }
 }
 

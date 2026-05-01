@@ -359,7 +359,7 @@ class _RouteCardState extends State<_RouteCard> {
     final aiGlow = isAiPick
         ? [
             BoxShadow(
-              color: const Color(0x3300D26A),
+              color: const Color(0x3300A854),
               blurRadius: 20,
               offset: const Offset(0, 8),
             ),
@@ -381,7 +381,7 @@ class _RouteCardState extends State<_RouteCard> {
             borderRadius: BorderRadius.circular(20),
             border: Border.all(
               color: selected
-                  ? const Color(0xFF00D26A)
+                  ? const Color(0xFF00A854)
                   : Colors.transparent,
               width: 1.5,
             ),
@@ -435,7 +435,7 @@ class _RouteCardBody extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(
                     horizontal: 10, vertical: 5),
                 decoration: BoxDecoration(
-                  color: const Color(0xFF00D26A),
+                  color: const Color(0xFF00A854),
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Row(
