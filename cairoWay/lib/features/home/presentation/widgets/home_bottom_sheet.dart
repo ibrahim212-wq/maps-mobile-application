@@ -31,8 +31,8 @@ class HomeBottomSheet extends ConsumerWidget {
 
     // Reserve space for: bottom-nav + safe-area inset.
     final reservedBottom = bottomNavHeight + mq.padding.bottom;
-    final minSize = 0.28;
-    final initialSize = 0.28;
+    final minSize = 0.25;
+    final initialSize = 0.42;
     final maxSize = 0.85;
 
     return DraggableScrollableSheet(
@@ -40,7 +40,7 @@ class HomeBottomSheet extends ConsumerWidget {
       minChildSize: minSize,
       maxChildSize: maxSize,
       snap: true,
-      snapSizes: [minSize, maxSize],
+      snapSizes: [0.42, 0.85],
       builder: (ctx, scrollCtrl) {
         return GlassContainer(
           borderRadius: 28,
@@ -67,7 +67,6 @@ class HomeBottomSheet extends ConsumerWidget {
               const _PrimaryActionRow(),
               const SizedBox(height: 20),
               const _BestTimeChip(),
-              const SizedBox(height: 28),
               const _RecentsSection(),
             ],
           ),
