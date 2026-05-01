@@ -424,7 +424,7 @@ class _NavigationScreenState extends ConsumerState<NavigationScreen> {
             onPressed: () => Navigator.of(ctx).pop(false),
             child: const Text(
               'Continue navigating',
-              style: TextStyle(color: Color(0xFF00A854)),
+              style: TextStyle(color: Color(0xFF81938A)),
             ),
           ),
           TextButton(
@@ -1207,7 +1207,7 @@ class _NavigationScreenState extends ConsumerState<NavigationScreen> {
                   child: const Center(
                     child: Icon(
                       Icons.my_location_rounded,
-                      color: Color(0xFF00A854),
+                      color: Color(0xFF81938A),
                       size: 24,
                     ),
                   ),

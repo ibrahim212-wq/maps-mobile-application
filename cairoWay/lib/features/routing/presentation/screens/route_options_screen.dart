@@ -381,7 +381,7 @@ class _RouteCardState extends State<_RouteCard> {
             borderRadius: BorderRadius.circular(20),
             border: Border.all(
               color: selected
-                  ? const Color(0xFF00A854)
+                  ? const Color(0xFF50605A)
                   : const Color(0x33FFFFFF),
               width: 1.5,
             ),
@@ -441,7 +441,7 @@ class _RouteCardBody extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(
                     horizontal: 10, vertical: 5),
                 decoration: BoxDecoration(
-                  color: const Color(0xFF00A854),
+                  color: const Color(0xFF50605A),
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Row(

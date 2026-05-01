@@ -116,13 +116,13 @@ class _IconButton extends StatelessWidget {
             ? Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(icon, color: const Color(0xFF00A854), size: 20),
+                  Icon(icon, color: const Color(0xFF81938A), size: 20),
                   const SizedBox(height: 2),
                   Text(
                     label!,
                     style: const TextStyle(
                       fontSize: 8,
-                      color: Color(0xFF00A854),
+                      color: Color(0xFF81938A),
                       height: 1,
                       fontWeight: FontWeight.w600,
                     ),

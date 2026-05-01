@@ -9,9 +9,9 @@ extension TrafficLevelX on TrafficLevel {
   Color get color {
     switch (this) {
       case TrafficLevel.free:
-        return const Color(0xFF00C853);
+        return const Color(0xFF81938A);
       case TrafficLevel.light:
-        return const Color(0xFF69F0AE);
+        return const Color(0xFFB9CABE);
       case TrafficLevel.moderate:
         return const Color(0xFFFFD740);
       case TrafficLevel.heavy:
