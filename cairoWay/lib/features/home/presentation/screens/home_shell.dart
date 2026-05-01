@@ -1,11 +1,9 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/routing/app_router.dart';
-import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/glass_container.dart';
 
 /// Bottom-navigation shell that hosts the four primary tabs.
 class HomeShell extends StatelessWidget {
@@ -31,62 +29,38 @@ class HomeShell extends StatelessWidget {
   Widget build(BuildContext context) {
     final location = GoRouterState.of(context).uri.path;
     final index = _indexFor(location);
-    final brightness = Theme.of(context).brightness;
     final mq = MediaQuery.of(context);
     
+    final isHome = location == AppRoutes.home;
+
     return Scaffold(
       extendBody: true,
       body: child,
-      bottomNavigationBar: Padding(
-        padding: EdgeInsets.fromLTRB(16, 0, 16, mq.padding.bottom + 16),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(28),
-          child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24, tileMode: TileMode.mirror),
-            child: Container(
-              height: 70,
-              decoration: BoxDecoration(
-                gradient: AppColors.glassGradient(brightness),
-                borderRadius: BorderRadius.circular(28),
-                border: Border(
-                  top: BorderSide(
-                    color: AppColors.glassBorderTop(brightness),
-                    width: 1,
-                  ),
-                  left: BorderSide(
-                    color: AppColors.glassBorder(brightness),
-                    width: 1,
-                  ),
-                  right: BorderSide(
-                    color: AppColors.glassBorder(brightness),
-                    width: 1,
-                  ),
-                  bottom: BorderSide(
-                    color: AppColors.glassBorder(brightness),
-                    width: 1,
-                  ),
+      bottomNavigationBar: isHome
+          ? null
+          : Padding(
+              padding: EdgeInsets.fromLTRB(16, 0, 16, mq.padding.bottom + 16),
+              child: GlassContainer(
+                borderRadius: 28,
+                height: 70,
+                padding: EdgeInsets.zero,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    for (var i = 0; i < _tabs.length; i++)
+                      _NavItem(
+                        icon: _tabs[i].icon,
+                        label: _tabs[i].label,
+                        selected: index == i,
+                        onTap: () {
+                          HapticFeedback.selectionClick();
+                          context.go(_tabs[i].path);
+                        },
+                      ),
+                  ],
                 ),
-                boxShadow: AppColors.glassShadow(brightness),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  for (var i = 0; i < _tabs.length; i++)
-                    _NavItem(
-                      icon: _tabs[i].icon,
-                      label: _tabs[i].label,
-                      selected: index == i,
-                      onTap: () {
-                        HapticFeedback.selectionClick();
-                        context.go(_tabs[i].path);
-                      },
-                    ),
-                ],
               ),
             ),
-          ),
-        ),
-      ),
     );
   }
 }

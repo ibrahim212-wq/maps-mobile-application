@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 
 import '../../../../core/routing/app_router.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/glass_container.dart';
 import '../../../../shared/models/place.dart';
 import '../../../../shared/widgets/glass_card.dart';
 import '../../../../shared/widgets/premium_button.dart';
@@ -440,19 +441,9 @@ class _LoadingState extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Container(
+        GlassContainer(
           padding: const EdgeInsets.all(20),
-          decoration: BoxDecoration(
-            gradient: AppColors.premiumGradient,
-            borderRadius: BorderRadius.circular(24),
-            boxShadow: [
-              BoxShadow(
-                color: scheme.primary.withValues(alpha: 0.28),
-                blurRadius: 20,
-                offset: const Offset(0, 8),
-              ),
-            ],
-          ),
+          borderRadius: 24,
           child: Row(
             children: [
               const Icon(Icons.auto_awesome_rounded,

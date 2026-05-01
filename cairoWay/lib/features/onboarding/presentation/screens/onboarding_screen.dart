@@ -7,11 +7,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/glass_container.dart';
 import '../../../../shared/models/place.dart';
 import '../../../../shared/services/location_service.dart';
 import '../../../../shared/services/places_service.dart';
 import '../../../../shared/services/storage_service.dart';
-import '../../../../shared/widgets/glass_card.dart';
 import '../../../../shared/widgets/premium_button.dart';
 import '../../../../shared/widgets/shimmer_loader.dart';
 import '../../../home/presentation/providers/home_prompt_provider.dart';
@@ -173,8 +173,9 @@ class _PickPlacePageState extends ConsumerState<_PickPlacePage> {
             ),
           ),
           const SizedBox(height: 8),
-          GlassCard(
+          GlassContainer(
             padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+            borderRadius: 16,
             child: ListTile(
               leading: const Icon(Icons.my_location_rounded),
               title: const Text('Use my current location'),
@@ -184,8 +185,9 @@ class _PickPlacePageState extends ConsumerState<_PickPlacePage> {
           ),
           const SizedBox(height: 12),
           if (_selected != null)
-            Card(
-              color: scheme.primary.withValues(alpha: 0.10),
+            GlassContainer(
+              padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+              borderRadius: 16,
               child: ListTile(
                 leading: Icon(Icons.check_circle_rounded,
                     color: scheme.primary),

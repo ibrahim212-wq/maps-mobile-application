@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import '../../../../core/theme/app_colors.dart';
-import '../../../../shared/widgets/glass_card.dart';
+import '../../../../core/theme/glass_container.dart';
 import '../../domain/models/time_suggestion.dart';
 import 'ai_confidence_bar.dart';
 
@@ -35,50 +34,29 @@ class TimeSuggestionCard extends StatelessWidget {
   }
 
   Widget _buildHero(BuildContext context) {
-    final scheme = Theme.of(context).colorScheme;
     final timeLabel = DateFormat.jm().format(suggestion.departureTime);
     final arrivalLabel = DateFormat.jm().format(suggestion.arrivalTime);
     final status = _ArrivalStatus.from(suggestion.arrivalTime, targetArrival);
 
-    return Container(
-      decoration: BoxDecoration(
-        gradient: AppColors.premiumGradient,
-        borderRadius: BorderRadius.circular(24),
-        boxShadow: [
-          BoxShadow(
-            color: scheme.primary.withValues(alpha: 0.32),
-            blurRadius: 28,
-            offset: const Offset(0, 12),
-          ),
-        ],
-      ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(24),
-        child: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [
-                Colors.white.withValues(alpha: 0.08),
-                Colors.white.withValues(alpha: 0.0),
-              ],
-            ),
-          ),
-          padding: const EdgeInsets.fromLTRB(18, 16, 18, 18),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 10, vertical: 5),
-                    decoration: BoxDecoration(
-                      color: Colors.white.withValues(alpha: 0.20),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: const Row(
+    return GlassContainer(
+      borderRadius: 24,
+      padding: EdgeInsets.zero,
+      onTap: () {},
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(18, 16, 18, 18),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 10, vertical: 5),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withAlpha(51),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: const Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Icon(Icons.recommend_rounded,
@@ -114,7 +92,7 @@ class TimeSuggestionCard extends StatelessWidget {
               Text(
                 'Arrive around $arrivalLabel',
                 style: TextStyle(
-                  color: Colors.white.withValues(alpha: 0.92),
+                  color: Colors.white.withAlpha(235),
                   fontSize: 14,
                   fontWeight: FontWeight.w600,
                 ),
@@ -137,7 +115,7 @@ class TimeSuggestionCard extends StatelessWidget {
                   Text(
                     '${suggestion.estimatedDurationMinutes} min trip',
                     style: TextStyle(
-                      color: Colors.white.withValues(alpha: 0.86),
+                      color: Colors.white.withAlpha(219),
                       fontSize: 12,
                       fontWeight: FontWeight.w700,
                     ),
@@ -148,7 +126,7 @@ class TimeSuggestionCard extends StatelessWidget {
               Text(
                 'Reason: ${_friendlyReason(suggestion.reasoning)}',
                 style: TextStyle(
-                  color: Colors.white.withValues(alpha: 0.9),
+                  color: Colors.white.withAlpha(230),
                   fontSize: 13,
                   height: 1.4,
                 ),
@@ -181,25 +159,18 @@ class TimeSuggestionCard extends StatelessWidget {
             ],
           ),
         ),
-      ),
     );
   }
 
   Widget _buildCompact(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
-    final brightness = Theme.of(context).brightness;
     final timeLabel = DateFormat.jm().format(suggestion.departureTime);
     final arrivalLabel = DateFormat.jm().format(suggestion.arrivalTime);
     final status = _ArrivalStatus.from(suggestion.arrivalTime, targetArrival);
 
-    return GlassCard(
+    return GlassContainer(
       padding: const EdgeInsets.fromLTRB(16, 14, 16, 14),
       borderRadius: 20,
-      blur: 36,
-      tint: AppColors.glassFillLight(brightness),
-      borderColor: suggestion.isRecommended
-          ? AppColors.glassBorderAccent(brightness)
-          : AppColors.glassBorder(brightness),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -274,12 +245,22 @@ class _LevelBadge extends StatelessWidget {
   final Color color;
   final bool onPremium;
 
+  String _levelLabel() {
+    switch (level) {
+      case TrafficLevel.free: return 'Free flow';
+      case TrafficLevel.light: return 'Light';
+      case TrafficLevel.moderate: return 'Moderate';
+      case TrafficLevel.heavy: return 'Heavy';
+      case TrafficLevel.gridlock: return 'Gridlock';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final fg = onPremium ? Colors.white : color;
     final bg = onPremium
-        ? Colors.white.withValues(alpha: 0.18)
-        : color.withValues(alpha: 0.16);
+        ? Colors.white.withAlpha(46)
+        : color.withAlpha(41);
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
       decoration: BoxDecoration(
@@ -287,7 +268,7 @@ class _LevelBadge extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
         border: onPremium
             ? null
-            : Border.all(color: color.withValues(alpha: 0.35)),
+            : Border.all(color: color.withAlpha(51), width: 1),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -296,13 +277,13 @@ class _LevelBadge extends StatelessWidget {
             width: 8,
             height: 8,
             decoration: BoxDecoration(
-              color: onPremium ? Colors.white : color,
+              color: fg,
               shape: BoxShape.circle,
             ),
           ),
           const SizedBox(width: 6),
           Text(
-            level.label,
+            _levelLabel(),
             style: TextStyle(
               color: fg,
               fontSize: 12,
