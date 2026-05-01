@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -9,6 +7,7 @@ import 'package:intl/intl.dart';
 import '../../../../core/constants/app_constants.dart';
 import '../../../../core/routing/app_router.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/glass_container.dart';
 import '../../../../shared/models/place.dart';
 import '../../../../shared/services/location_service.dart';
 import '../../../../shared/services/storage_service.dart';
@@ -29,7 +28,6 @@ class HomeBottomSheet extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final mq = MediaQuery.of(context);
     final scheme = Theme.of(context).colorScheme;
-    final brightness = Theme.of(context).brightness;
 
     // Reserve space for: bottom-nav + safe-area inset.
     final reservedBottom = bottomNavHeight + mq.padding.bottom;
@@ -47,59 +45,34 @@ class HomeBottomSheet extends ConsumerWidget {
       snap: true,
       snapSizes: [initialSize, maxSize],
       builder: (ctx, scrollCtrl) {
-        return ClipRRect(
-          borderRadius:
-              const BorderRadius.vertical(top: Radius.circular(28)),
-          child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
-            child: Container(
-              decoration: BoxDecoration(
-                gradient: AppColors.glassGradient(brightness),
-                borderRadius:
-                    const BorderRadius.vertical(top: Radius.circular(28)),
-                border: Border(
-                  top: BorderSide(
-                    color: AppColors.glassBorderTop(brightness),
-                    width: 1,
-                  ),
-                  left: BorderSide(
-                    color: AppColors.glassBorder(brightness),
-                    width: 1,
-                  ),
-                  right: BorderSide(
-                    color: AppColors.glassBorder(brightness),
-                    width: 1,
+        return GlassContainer(
+          borderRadius: 28,
+          padding: EdgeInsets.zero,
+          child: ListView(
+            controller: scrollCtrl,
+            padding: EdgeInsets.fromLTRB(24, 16, 24, reservedBottom + 24),
+            physics: const ClampingScrollPhysics(),
+            children: [
+              Center(
+                child: Container(
+                  width: 40,
+                  height: 4,
+                  margin: const EdgeInsets.only(bottom: 20),
+                  decoration: BoxDecoration(
+                    color:
+                        scheme.onSurfaceVariant.withValues(alpha: 0.30),
+                    borderRadius: BorderRadius.circular(4),
                   ),
                 ),
-                boxShadow: AppColors.glassShadow(brightness),
               ),
-              child: ListView(
-                controller: scrollCtrl,
-                padding: EdgeInsets.fromLTRB(24, 16, 24, reservedBottom + 24),
-                physics: const ClampingScrollPhysics(),
-                children: [
-                  Center(
-                    child: Container(
-                      width: 40,
-                      height: 4,
-                      margin: const EdgeInsets.only(bottom: 20),
-                      decoration: BoxDecoration(
-                        color:
-                            scheme.onSurfaceVariant.withValues(alpha: 0.30),
-                        borderRadius: BorderRadius.circular(4),
-                      ),
-                    ),
-                  ),
-                  const _GreetingHeader(),
-                  const SizedBox(height: 20),
-                  const _PrimaryActionRow(),
-                  const SizedBox(height: 20),
-                  const _BestTimeChip(),
-                  const SizedBox(height: 28),
-                  const _RecentsSection(),
-                ],
-              ),
-            ),
+              const _GreetingHeader(),
+              const SizedBox(height: 20),
+              const _PrimaryActionRow(),
+              const SizedBox(height: 20),
+              const _BestTimeChip(),
+              const SizedBox(height: 28),
+              const _RecentsSection(),
+            ],
           ),
         ).animate().fadeIn(delay: 250.ms, duration: 400.ms);
       },

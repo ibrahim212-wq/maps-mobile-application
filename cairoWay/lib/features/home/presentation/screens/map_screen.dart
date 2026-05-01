@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
+import '../../../../core/routing/app_router.dart';
 import '../../../../shared/models/incident.dart';
 import '../../../../shared/services/location_service.dart';
 import '../../../../shared/services/storage_service.dart';
@@ -226,10 +228,13 @@ class _MapScreenState extends ConsumerState<MapScreen> {
     WidgetsBinding.instance
         .addPostFrameCallback((_) => _maybeShowHomeWorkPrompt());
 
+    final mq = MediaQuery.of(context);
+
     return Scaffold(
       extendBody: true,
       body: Stack(
         children: [
+          // 1. Map fills entire screen (bottom layer)
           Positioned.fill(
             child: MapView(
               brightness: brightness,
@@ -246,12 +251,17 @@ class _MapScreenState extends ConsumerState<MapScreen> {
               },
             ),
           ),
-          // Top search bar
-          Align(
-            alignment: Alignment.topCenter,
-            child: MapSearchBar(onProfileTap: _openLayersSheet),
+          // 2. Search bar (top, floating over map)
+          Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
+            child: SafeArea(
+              bottom: false,
+              child: MapSearchBar(onProfileTap: _openLayersSheet),
+            ),
           ),
-          // Right side floating controls — pushed clear of the peek sheet.
+          // 3. Right side floating controls (middle right, floating over map)
           Positioned(
             right: 16,
             bottom: _peekClearance(context) + 12,
@@ -266,7 +276,7 @@ class _MapScreenState extends ConsumerState<MapScreen> {
               signalsOn: showSignals,
             ),
           ),
-          // Incident report FAB (left side)
+          // 4. Incident report pill (middle left, floating over map)
           Positioned(
             left: 16,
             bottom: _peekClearance(context) + 12,
@@ -285,8 +295,48 @@ class _MapScreenState extends ConsumerState<MapScreen> {
               ),
             ).animate().fadeIn(delay: 250.ms).slideX(begin: -0.2),
           ),
-          // Persistent draggable home sheet (peek + expand to ~50%).
+          // 5. Bottom sheet with greeting card (bottom, floating over map)
           const HomeBottomSheet(bottomNavHeight: _bottomNavHeight),
+          // 6. Bottom navigation bar (very bottom, floating over map)
+          Positioned(
+            left: 16,
+            right: 16,
+            bottom: mq.padding.bottom + 16,
+            child: GlassContainer(
+              borderRadius: 28,
+              height: _bottomNavHeight,
+              padding: EdgeInsets.zero,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  _NavItem(
+                    icon: Icons.map_rounded,
+                    label: 'Map',
+                    selected: true,
+                    onTap: () {},
+                  ),
+                  _NavItem(
+                    icon: Icons.insights_rounded,
+                    label: 'Insights',
+                    selected: false,
+                    onTap: () => context.go(AppRoutes.insights),
+                  ),
+                  _NavItem(
+                    icon: Icons.notifications_rounded,
+                    label: 'Alerts',
+                    selected: false,
+                    onTap: () => context.go(AppRoutes.alerts),
+                  ),
+                  _NavItem(
+                    icon: Icons.person_rounded,
+                    label: 'Profile',
+                    selected: false,
+                    onTap: () => context.go(AppRoutes.profile),
+                  ),
+                ],
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -439,6 +489,55 @@ class _LayerCard extends StatelessWidget {
                     ),
               ),
             ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Glass bottom-navigation item used inside the home screen Stack.
+class _NavItem extends StatelessWidget {
+  const _NavItem({
+    required this.icon,
+    required this.label,
+    required this.selected,
+    required this.onTap,
+  });
+
+  final IconData icon;
+  final String label;
+  final bool selected;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+    final color = selected ? scheme.primary : scheme.onSurfaceVariant;
+
+    return Expanded(
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(16),
+          child: Container(
+            padding: const EdgeInsets.symmetric(vertical: 8),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(icon, color: color, size: 24),
+                const SizedBox(height: 4),
+                Text(
+                  label,
+                  style: textTheme.labelSmall?.copyWith(
+                    color: color,
+                    fontWeight: selected ? FontWeight.w600 : FontWeight.w500,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

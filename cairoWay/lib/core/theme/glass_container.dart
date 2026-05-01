@@ -1,11 +1,8 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 
-/// Emerald Glass container with exact glassmorphism recipe from reference design.
+/// Emerald Glass container using pure semi-transparency.
 ///
-/// Uses ClipRRect, BackdropFilter with ImageFilter.blur, and a gradient-filled
-/// Container with border and shadow. Works in both light and dark modes.
+/// Uses low alpha colors to let the map show through directly. No BackdropFilter.
 class GlassContainer extends StatelessWidget {
   const GlassContainer({
     super.key,
@@ -40,54 +37,72 @@ class GlassContainer extends StatelessWidget {
     final isDark = brightness == Brightness.dark;
     final radius = BorderRadius.circular(borderRadius);
 
-    final Widget inner = Container(
+    // Determine variant heuristics
+    final bool isPill = borderRadius >= 9999;
+    final bool isSmallButton = (width != null && height != null &&
+        width == 48 && height == 48 && borderRadius.round() == 16);
+
+    // Resolve decoration per new spec
+    Color backgroundColor;
+    Color borderColor;
+    double borderWidth;
+    List<BoxShadow>? shadows;
+
+    if (isPill) {
+      if (isDark) {
+        backgroundColor = const Color(0x4D0A1F14);
+        borderColor = const Color(0x4D00D26A);
+        borderWidth = 1.0;
+        shadows = null;
+      } else {
+        backgroundColor = const Color(0xB3FFFFFF);
+        borderColor = const Color(0x4400A854);
+        borderWidth = 1.0;
+        shadows = const [
+          BoxShadow(color: Color(0x6600D26A), blurRadius: 30, spreadRadius: 4),
+        ];
+      }
+    } else if (isSmallButton) {
+      if (isDark) {
+        backgroundColor = const Color(0x66071510);
+        borderColor = const Color(0x4400D26A);
+        borderWidth = 1.0;
+        shadows = null;
+      } else {
+        backgroundColor = const Color(0xB3FFFFFF);
+        borderColor = const Color(0x3300A854);
+        borderWidth = 1.0;
+        shadows = null;
+      }
+    } else {
+      if (isDark) {
+        backgroundColor = const Color(0x4D0A1F14);
+        borderColor = const Color(0x3300D26A);
+        borderWidth = 1.0;
+        shadows = const [
+          BoxShadow(color: Color(0x66000000), blurRadius: 20, offset: Offset(0, 4)),
+        ];
+      } else {
+        backgroundColor = const Color(0x99FFFFFF);
+        borderColor = const Color(0x3300A854);
+        borderWidth = 1.0;
+        shadows = const [
+          BoxShadow(color: Color(0x1A000000), blurRadius: 20, offset: Offset(0, 4)),
+        ];
+      }
+    }
+
+    final Widget simulated = Container(
       width: width,
       height: height,
       padding: padding,
       decoration: BoxDecoration(
-        gradient: isDark
-            ? const LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  Color(0x661E293B),
-                  Color(0x990F172A),
-                ],
-              )
-            : const LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  Color(0xB3FFFFFF),
-                  Color(0x66FFFFFF),
-                ],
-              ),
+        color: backgroundColor,
         borderRadius: radius,
-        border: Border.all(
-          color: isDark
-              ? const Color(0x14FFFFFF)
-              : const Color(0x99FFFFFF),
-          width: 1,
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: isDark
-                ? Colors.black38
-                : const Color(0x12262758),
-            blurRadius: 32,
-            offset: const Offset(0, 8),
-          ),
-        ],
+        border: Border.all(color: borderColor, width: borderWidth),
+        boxShadow: shadows,
       ),
       child: child,
-    );
-
-    final Widget blurred = ClipRRect(
-      borderRadius: radius,
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
-        child: inner,
-      ),
     );
 
     if (onTap != null) {
@@ -96,11 +111,11 @@ class GlassContainer extends StatelessWidget {
         child: InkWell(
           borderRadius: radius,
           onTap: onTap,
-          child: blurred,
+          child: simulated,
         ),
       );
     }
 
-    return blurred;
+    return simulated;
   }
 }

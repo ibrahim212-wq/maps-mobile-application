@@ -1,24 +1,20 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
+import '../../core/theme/glass_container.dart';
 
-import '../../core/theme/app_colors.dart';
-
-/// Emerald Glass card with exact glassmorphism recipe from reference design.
-/// Implements gradient background, backdrop blur, dual borders, and emerald glow.
+/// Emerald Glass card using pure semi-transparency.
 class GlassCard extends StatelessWidget {
   const GlassCard({
     super.key,
     required this.child,
     this.padding = const EdgeInsets.all(20),
     this.borderRadius = 28,
-    this.blur = 24,
-    this.tint,
-    this.borderColor,
-    this.boxShadow,
+    this.blur = 24, // ignored, kept for compatibility
+    this.tint, // ignored
+    this.borderColor, // ignored
+    this.boxShadow, // ignored
     this.onTap,
-    this.gradient,
-    this.showInnerHighlight = true,
+    this.gradient, // ignored
+    this.showInnerHighlight = true, // ignored
   });
 
   final Widget child;
@@ -34,49 +30,11 @@ class GlassCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final brightness = Theme.of(context).brightness;
-    final radius = BorderRadius.circular(borderRadius);
-    final glassGrad = gradient ?? AppColors.glassGradient(brightness);
-    final border = borderColor ?? AppColors.glassBorder(brightness);
-    final shadows = boxShadow ?? AppColors.glassShadow(brightness);
-
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        borderRadius: radius,
-        onTap: onTap,
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: radius,
-            boxShadow: shadows,
-          ),
-          child: ClipRRect(
-            borderRadius: radius,
-            child: BackdropFilter(
-              filter: ImageFilter.blur(
-                sigmaX: blur,
-                sigmaY: blur,
-                tileMode: TileMode.mirror,
-              ),
-              child: Container(
-                decoration: BoxDecoration(
-                  gradient: glassGrad,
-                  borderRadius: radius,
-                  border: Border.all(color: border, width: 1),
-                ),
-                foregroundDecoration: showInnerHighlight
-                    ? BoxDecoration(
-                        border: AppColors.glassInnerHighlight(brightness),
-                        borderRadius: radius,
-                      )
-                    : null,
-                padding: padding,
-                child: child,
-              ),
-            ),
-          ),
-        ),
-      ),
+    return GlassContainer(
+      padding: padding,
+      borderRadius: borderRadius,
+      onTap: onTap,
+      child: child,
     );
   }
 }

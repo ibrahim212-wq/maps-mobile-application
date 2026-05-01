@@ -398,21 +398,43 @@ class _NavigationScreenState extends ConsumerState<NavigationScreen> {
   Future<bool?> _confirmEnd(double distanceToDest) async {
     return showDialog<bool>(
       context: context,
-      builder: (ctx) => AlertDialog(
-        title: const Text('End navigation?'),
-        content: Text(distanceToDest.isFinite
-            ? "You're ${Fmt.distance(distanceToDest)} from your destination."
-            : 'Are you sure you want to end the trip?'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(ctx).pop(false),
-            child: const Text('Continue navigating'),
+      builder: (ctx) => Dialog(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        child: GlassContainer(
+          borderRadius: 28,
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('End navigation?',
+                  style: Theme.of(ctx).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold)),
+              const SizedBox(height: 12),
+              Text(
+                distanceToDest.isFinite
+                    ? "You're ${Fmt.distance(distanceToDest)} from your destination."
+                    : 'Are you sure you want to end the trip?',
+                style: Theme.of(ctx).textTheme.bodyMedium,
+              ),
+              const SizedBox(height: 24),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  TextButton(
+                    onPressed: () => Navigator.of(ctx).pop(false),
+                    child: const Text('Continue navigating'),
+                  ),
+                  const SizedBox(width: 8),
+                  FilledButton.tonal(
+                    onPressed: () => Navigator.of(ctx).pop(true),
+                    child: const Text('End trip'),
+                  ),
+                ],
+              ),
+            ],
           ),
-          FilledButton.tonal(
-            onPressed: () => Navigator.of(ctx).pop(true),
-            child: const Text('End trip'),
-          ),
-        ],
+        ),
       ),
     );
   }
@@ -1146,55 +1168,43 @@ class _NavigationScreenState extends ConsumerState<NavigationScreen> {
             Positioned(
               right: 16,
               bottom: 180,
-              child: Material(
-                elevation: 8,
-                borderRadius: BorderRadius.circular(24),
-                shadowColor: AppColors.lightPrimary.withValues(alpha: 0.35),
-                child: InkWell(
-                  onTap: () async {
-                    HapticFeedback.mediumImpact();
-                    debugPrint('NAV: Recenter tapped - resuming auto-follow');
-                    _autoResumeTimer?.cancel();
-                    setState(() => _autoFollow = true);
-                    final loc = _currentLoc;
-                    if (loc != null) {
-                      await _enterDrivingCamera(
-                        lat: loc.lat,
-                        lng: loc.lng,
-                        heading: _userBearing,
-                        durationMs: 600,
-                      );
-                    }
-                  },
-                  borderRadius: BorderRadius.circular(24),
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
-                    decoration: BoxDecoration(
-                      gradient: AppColors.primaryGradient,
-                      borderRadius: BorderRadius.circular(24),
+              child: GlassContainer.pill(
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+                onTap: () async {
+                  HapticFeedback.mediumImpact();
+                  debugPrint('NAV: Recenter tapped - resuming auto-follow');
+                  _autoResumeTimer?.cancel();
+                  setState(() => _autoFollow = true);
+                  final loc = _currentLoc;
+                  if (loc != null) {
+                    await _enterDrivingCamera(
+                      lat: loc.lat,
+                      lng: loc.lng,
+                      heading: _userBearing,
+                      durationMs: 600,
+                    );
+                  }
+                },
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Icon(
+                      Icons.my_location_rounded,
+                      color: Colors.white,
+                      size: 22,
                     ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const Icon(
-                          Icons.my_location_rounded,
-                          color: Colors.white,
-                          size: 22,
-                        ),
-                        const SizedBox(width: 10),
-                        Text(
-                          'Recenter',
-                          style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                    const SizedBox(width: 10),
+                    Text(
+                      'Recenter',
+                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
                             color: Colors.white,
-                            fontWeight: FontWeight.w600,
-                            letterSpacing: 0.2,
+                            fontWeight: FontWeight.w700,
                           ),
-                        ),
-                      ],
                     ),
-                  ),
+                  ],
                 ),
-              ).animate().fadeIn(duration: 300.ms).scale(begin: const Offset(0.85, 0.85)),
+              ).animate().scale(
+                  duration: 200.ms, curve: Curves.easeOutBack, begin: const Offset(0.8, 0.8)),
             ),
           // Small non-blocking loading indicator (top-right corner)
           if (!_mapReady)

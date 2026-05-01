@@ -100,9 +100,10 @@ class _MapViewState extends State<MapView> {
           ? 'mapbox://styles/mapbox/navigation-night-v1'
           : 'mapbox://styles/mapbox/navigation-day-v1';
     }
+    // Default basemap uses clean dark/light v11 styles to match reference.
     return b == Brightness.dark
-        ? mb.MapboxStyles.DARK
-        : mb.MapboxStyles.LIGHT;
+        ? 'mapbox://styles/mapbox/dark-v11'
+        : 'mapbox://styles/mapbox/light-v11';
   }
 
   @override

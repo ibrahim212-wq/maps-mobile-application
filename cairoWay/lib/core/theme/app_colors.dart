@@ -100,35 +100,35 @@ class AppColors {
   static const LinearGradient primaryGradient = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
-    colors: [Color(0xFF00D26A), Color(0xFF008F48)],
+    colors: [Color(0x9900D26A), Color(0x99008F48)],
   );
   
   /// AI/Premium gradient with gold accent
   static const LinearGradient aiGradient = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
-    colors: [Color(0xFFD9A441), Color(0xFFB8883A)],
+    colors: [Color(0x99D9A441), Color(0x99B8883A)],
   );
   
   /// Hybrid emerald-gold gradient for premium AI features
   static const LinearGradient premiumGradient = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
-    colors: [Color(0xFF00D26A), Color(0xFFD9A441)],
+    colors: [Color(0x9900D26A), Color(0x99D9A441)],
   );
   
   /// Dark mode hero gradient — deep emerald tones
   static const LinearGradient darkHeroGradient = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
-    colors: [Color(0xFF123D35), Color(0xFF0B2E26)],
+    colors: [Color(0x99123D35), Color(0x990B2E26)],
   );
   
   /// Soft green accent gradient for highlights
   static const LinearGradient accentGradient = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
-    colors: [Color(0xFF00D26A), Color(0xFF10B981)],
+    colors: [Color(0x9900D26A), Color(0x9910B981)],
   );
 
   // ═══════════════════════════════════════════════════════════════════════
