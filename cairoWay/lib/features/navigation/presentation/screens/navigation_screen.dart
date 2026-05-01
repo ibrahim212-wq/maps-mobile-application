@@ -1010,9 +1010,24 @@ class _NavigationScreenState extends ConsumerState<NavigationScreen> {
             child: SafeArea(
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
-                child: GlassContainer(
-                  borderRadius: 24,
-                  padding: EdgeInsets.zero,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: brightness == Brightness.dark
+                        ? const Color(0xEE0A1F14)
+                        : const Color(0xEEFFFFFF),
+                    borderRadius: BorderRadius.circular(24),
+                    border: Border.all(
+                      color: const Color(0x4400D26A),
+                      width: 1.5,
+                    ),
+                    boxShadow: const [
+                      BoxShadow(
+                        color: Color(0x3300D26A),
+                        blurRadius: 16,
+                        offset: Offset(0, 4),
+                      ),
+                    ],
+                  ),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -1168,8 +1183,7 @@ class _NavigationScreenState extends ConsumerState<NavigationScreen> {
             Positioned(
               right: 16,
               bottom: 180,
-              child: GlassContainer.pill(
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+              child: GestureDetector(
                 onTap: () async {
                   HapticFeedback.mediumImpact();
                   debugPrint('NAV: Recenter tapped - resuming auto-follow');
@@ -1185,23 +1199,25 @@ class _NavigationScreenState extends ConsumerState<NavigationScreen> {
                     );
                   }
                 },
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Icon(
-                      Icons.my_location_rounded,
-                      color: Colors.white,
-                      size: 22,
-                    ),
-                    const SizedBox(width: 10),
-                    Text(
-                      'Recenter',
-                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w700,
-                          ),
-                    ),
-                  ],
+                child: Container(
+                  width: 52,
+                  height: 52,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: const Color(0xFF00D26A),
+                    boxShadow: const [
+                      BoxShadow(
+                        color: Color(0x6600D26A),
+                        blurRadius: 16,
+                        spreadRadius: 2,
+                      ),
+                    ],
+                  ),
+                  child: const Icon(
+                    Icons.my_location_rounded,
+                    color: Colors.white,
+                    size: 24,
+                  ),
                 ),
               ).animate().scale(
                   duration: 200.ms, curve: Curves.easeOutBack, begin: const Offset(0.8, 0.8)),
