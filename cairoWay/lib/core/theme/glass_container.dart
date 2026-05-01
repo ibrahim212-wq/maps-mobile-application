@@ -56,10 +56,10 @@ class GlassContainer extends StatelessWidget {
         shadows = null;
       } else {
         backgroundColor = const Color(0xB3FFFFFF);
-        borderColor = const Color(0x4400A854);
+        borderColor = const Color(0x1A059669);
         borderWidth = 1.0;
         shadows = const [
-          BoxShadow(color: Color(0x6600D26A), blurRadius: 30, spreadRadius: 4),
+          BoxShadow(color: Color(0x2600D26A), blurRadius: 20, spreadRadius: 2),
         ];
       }
     } else if (isSmallButton) {
@@ -70,7 +70,7 @@ class GlassContainer extends StatelessWidget {
         shadows = null;
       } else {
         backgroundColor = const Color(0xB3FFFFFF);
-        borderColor = const Color(0x3300A854);
+        borderColor = const Color(0x1A059669);
         borderWidth = 1.0;
         shadows = null;
       }
@@ -84,10 +84,10 @@ class GlassContainer extends StatelessWidget {
         ];
       } else {
         backgroundColor = const Color(0x99FFFFFF);
-        borderColor = const Color(0x3300A854);
+        borderColor = const Color(0x1A059669);
         borderWidth = 1.0;
         shadows = const [
-          BoxShadow(color: Color(0x1A000000), blurRadius: 20, offset: Offset(0, 4)),
+          BoxShadow(color: Color(0x1A059669), blurRadius: 12),
         ];
       }
     }

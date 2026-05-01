@@ -32,15 +32,15 @@ class HomeBottomSheet extends ConsumerWidget {
     // Reserve space for: bottom-nav + safe-area inset.
     final reservedBottom = bottomNavHeight + mq.padding.bottom;
     final viewport = mq.size.height - mq.padding.top;
-    // Peek size: compact ~180px of content + reserved chrome (ensure AI row is visible).
-    final peekChild = 180 + reservedBottom;
-    final initialSize = (peekChild / viewport).clamp(0.22, 0.32);
-    final minSize = (reservedBottom + 60) / viewport;
-    final maxSize = 0.42;
+    // Peek size: compact ~330px of content + reserved chrome to ensure AI row is visible.
+    final peekChild = 330 + reservedBottom;
+    final initialSize = (peekChild / viewport).clamp(0.35, 0.55);
+    final minSize = initialSize;
+    final maxSize = 0.85;
 
     return DraggableScrollableSheet(
       initialChildSize: initialSize,
-      minChildSize: minSize.clamp(0.10, initialSize),
+      minChildSize: minSize,
       maxChildSize: maxSize,
       snap: true,
       snapSizes: [initialSize, maxSize],

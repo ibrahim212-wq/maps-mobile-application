@@ -132,8 +132,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
     ref.read(placesServiceProvider).renewSession();
     await ref.read(storageServiceProvider).addRecent(place);
     if (!mounted) return;
-    context.pop();
-    context.push(AppRoutes.routeOptions, extra: {'destination': place});
+    context.pushReplacement(AppRoutes.routeOptions, extra: {'destination': place});
   }
 
   /// Returns the best Material icon for a [Place] based on its category

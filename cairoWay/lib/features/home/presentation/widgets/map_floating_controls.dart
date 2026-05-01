@@ -24,39 +24,56 @@ class MapFloatingControls extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.end,
-      children: [
-        _IconButton(
-          icon: Icons.layers_rounded,
-          tooltip: 'Layers',
-          onTap: onLayers,
-        ),
-        const SizedBox(height: 10),
-        _IconButton(
-          icon: Icons.traffic_rounded,
-          tooltip: 'Traffic',
-          active: trafficOn,
-          onTap: onToggleTraffic,
-        ),
-        const SizedBox(height: 10),
-        _IconButton(
-          icon: Icons.brightness_1,
-          tooltip: 'Traffic signals',
-          active: signalsOn,
-          onTap: onToggleSignals,
-          smallIcon: true,
-        ),
-        const SizedBox(height: 10),
-        _IconButton(
-          icon: Icons.my_location_rounded,
-          tooltip: 'My location',
-          highlighted: true,
-          onTap: onRecenter,
-        ),
-      ],
-    ).animate().fadeIn(delay: 200.ms, duration: 400.ms).slideX(begin: 0.2);
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final h = constraints.maxHeight;
+        // Default: 4 buttons of 48px + 3 gaps of 12px = 228px
+        double btnSize = 48.0;
+        double gap = 12.0;
+        if (h < 228) {
+          btnSize = 40.0;
+          if (h < (40.0 * 4 + 12.0 * 3)) gap = 8.0;
+        }
+
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            _IconButton(
+              icon: Icons.layers_rounded,
+              tooltip: 'Layers',
+              onTap: onLayers,
+              size: btnSize,
+            ),
+            SizedBox(height: gap),
+            _IconButton(
+              icon: Icons.traffic_rounded,
+              tooltip: 'Traffic',
+              active: trafficOn,
+              onTap: onToggleTraffic,
+              size: btnSize,
+            ),
+            SizedBox(height: gap),
+            _IconButton(
+              icon: Icons.brightness_1,
+              tooltip: 'Traffic signals',
+              active: signalsOn,
+              onTap: onToggleSignals,
+              smallIcon: true,
+              size: btnSize,
+            ),
+            SizedBox(height: gap),
+            _IconButton(
+              icon: Icons.my_location_rounded,
+              tooltip: 'My location',
+              highlighted: true,
+              onTap: onRecenter,
+              size: btnSize,
+            ),
+          ],
+        ).animate().fadeIn(delay: 200.ms, duration: 400.ms).slideX(begin: 0.2);
+      },
+    );
   }
 }
 
@@ -64,6 +81,7 @@ class _IconButton extends StatelessWidget {
   const _IconButton({
     required this.icon,
     required this.onTap,
+    required this.size,
     this.tooltip,
     this.active = false,
     this.highlighted = false,
@@ -71,6 +89,7 @@ class _IconButton extends StatelessWidget {
   });
   final IconData icon;
   final VoidCallback onTap;
+  final double size;
   final String? tooltip;
   final bool active;
   final bool highlighted;
@@ -82,8 +101,8 @@ class _IconButton extends StatelessWidget {
     final color = highlighted || active ? scheme.primary : scheme.onSurface;
     final btn = GlassContainer(
       borderRadius: 16,
-      width: 48,
-      height: 48,
+      width: size,
+      height: size,
       padding: EdgeInsets.zero,
       onTap: () {
         HapticFeedback.selectionClick();

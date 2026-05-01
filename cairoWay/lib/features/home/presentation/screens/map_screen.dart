@@ -264,7 +264,8 @@ class _MapScreenState extends ConsumerState<MapScreen> {
           // 3. Right side floating controls (middle right, floating over map)
           Positioned(
             right: 16,
-            bottom: _peekClearance(context) + 12,
+            top: mq.padding.top + 80 + 16, // SearchBar bottom + 16
+            bottom: _peekClearance(context) + 16, // Above bottom sheet
             child: MapFloatingControls(
               onRecenter: _recenter,
               onToggleTraffic: () =>
@@ -279,7 +280,7 @@ class _MapScreenState extends ConsumerState<MapScreen> {
           // 4. Incident report pill (middle left, floating over map)
           Positioned(
             left: 16,
-            bottom: _peekClearance(context) + 12,
+            bottom: _peekClearance(context) + 16,
             child: GlassContainer.pill(
               padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
               onTap: _openIncidentSheet,
@@ -348,8 +349,11 @@ class _MapScreenState extends ConsumerState<MapScreen> {
   /// overlap the greeting card.
   double _peekClearance(BuildContext context) {
     final mq = MediaQuery.of(context);
-    // Peek = ~150 logical px content + nav + safe-area.
-    return 150 + _bottomNavHeight + mq.padding.bottom;
+    final reservedBottom = _bottomNavHeight + mq.padding.bottom;
+    final viewport = mq.size.height - mq.padding.top;
+    final peekChild = 330 + reservedBottom;
+    final initialSize = (peekChild / viewport).clamp(0.35, 0.55);
+    return initialSize * mq.size.height;
   }
 }
 
