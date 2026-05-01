@@ -351,9 +351,9 @@ class _MapScreenState extends ConsumerState<MapScreen> {
     final mq = MediaQuery.of(context);
     final reservedBottom = _bottomNavHeight + mq.padding.bottom;
     final viewport = mq.size.height - mq.padding.top;
-    final peekChild = 330 + reservedBottom;
-    final initialSize = (peekChild / viewport).clamp(0.35, 0.55);
-    return initialSize * mq.size.height;
+    final peekContentHeight = 280.0;
+    final minSize = (peekContentHeight + reservedBottom) / viewport;
+    return minSize * mq.size.height;
   }
 }
 

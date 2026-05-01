@@ -32,10 +32,11 @@ class HomeBottomSheet extends ConsumerWidget {
     // Reserve space for: bottom-nav + safe-area inset.
     final reservedBottom = bottomNavHeight + mq.padding.bottom;
     final viewport = mq.size.height - mq.padding.top;
-    // Peek size: compact ~330px of content + reserved chrome to ensure AI row is visible.
-    final peekChild = 330 + reservedBottom;
-    final initialSize = (peekChild / viewport).clamp(0.35, 0.55);
-    final minSize = initialSize;
+    // Peek size: exactly greeting row + set up commute button + explore button + arrive on time card
+    // Grab handle (24) + ListView top padding (16) + GreetingHeader (70) + SizedBox (20) + PrimaryActionRow (60) + SizedBox (20) + BestTimeChip (70) = 280px
+    final peekContentHeight = 280.0;
+    final minSize = (peekContentHeight + reservedBottom) / viewport;
+    final initialSize = minSize;
     final maxSize = 0.85;
 
     return DraggableScrollableSheet(
@@ -43,7 +44,7 @@ class HomeBottomSheet extends ConsumerWidget {
       minChildSize: minSize,
       maxChildSize: maxSize,
       snap: true,
-      snapSizes: [initialSize, maxSize],
+      snapSizes: [minSize, maxSize],
       builder: (ctx, scrollCtrl) {
         return GlassContainer(
           borderRadius: 28,
