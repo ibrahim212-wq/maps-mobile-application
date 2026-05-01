@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -7,12 +5,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/routing/app_router.dart';
-import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/glass_container.dart';
 import '../../../../core/utils/formatters.dart';
 import '../../../../shared/models/place.dart';
 import '../../../../shared/models/route_option.dart';
 import '../../../../shared/services/location_service.dart';
-import '../../../../shared/widgets/glass_card.dart';
 import '../../../../shared/widgets/premium_button.dart';
 import '../../../../shared/widgets/shimmer_loader.dart';
 import '../../../home/presentation/providers/map_layer_provider.dart';
@@ -131,7 +128,7 @@ class _RouteOptionsScreenState extends ConsumerState<RouteOptionsScreen> {
               padding: const EdgeInsets.fromLTRB(12, 8, 12, 0),
               child: Row(
                 children: [
-                  GlassCard(
+                  GlassContainer(
                     padding: const EdgeInsets.all(8),
                     borderRadius: 14,
                     onTap: () => context.pop(),
@@ -139,7 +136,7 @@ class _RouteOptionsScreenState extends ConsumerState<RouteOptionsScreen> {
                   ),
                   const SizedBox(width: 12),
                   Expanded(
-                    child: GlassCard(
+                    child: GlassContainer(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 14, vertical: 10),
                       borderRadius: 16,
@@ -167,47 +164,23 @@ class _RouteOptionsScreenState extends ConsumerState<RouteOptionsScreen> {
           ),
           DraggableScrollableSheet(
             initialChildSize: 0.42,
-            minChildSize: 0.18,
+            minChildSize: 0.35,
             maxChildSize: 0.85,
             builder: (ctx, scroll) {
-              final brightness = Theme.of(context).brightness;
-              return ClipRRect(
-                borderRadius:
-                    const BorderRadius.vertical(top: Radius.circular(28)),
-                child: BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      gradient: AppColors.glassGradient(brightness),
-                      borderRadius:
-                          const BorderRadius.vertical(top: Radius.circular(28)),
-                      border: Border(
-                        top: BorderSide(
-                          color: AppColors.glassBorderTop(brightness),
-                          width: 1,
-                        ),
-                        left: BorderSide(
-                          color: AppColors.glassBorder(brightness),
-                          width: 1,
-                        ),
-                        right: BorderSide(
-                          color: AppColors.glassBorder(brightness),
-                          width: 1,
-                        ),
+              return GlassContainer(
+                borderRadius: 28,
+                padding: EdgeInsets.zero,
+                child: Column(
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.only(top: 10, bottom: 6),
+                      width: 42,
+                      height: 4,
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.outlineVariant,
+                        borderRadius: BorderRadius.circular(4),
                       ),
-                      boxShadow: AppColors.glassShadow(brightness),
                     ),
-                    child: Column(
-                      children: [
-                        Container(
-                          margin: const EdgeInsets.only(top: 10, bottom: 6),
-                          width: 42,
-                          height: 4,
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).colorScheme.outlineVariant,
-                            borderRadius: BorderRadius.circular(4),
-                          ),
-                        ),
                         Expanded(
                           child: routesAsync.when(
                             loading: () => ListView(
@@ -295,8 +268,6 @@ class _RouteOptionsScreenState extends ConsumerState<RouteOptionsScreen> {
                         ),
                       ],
                     ),
-                  ),
-                ),
               );
             },
           ),
@@ -402,18 +373,33 @@ class _RouteCardState extends State<_RouteCard> {
         onPointerDown: (_) => setState(() => _pressed = true),
         onPointerUp: (_) => setState(() => _pressed = false),
         onPointerCancel: (_) => setState(() => _pressed = false),
-        child: GlassCard(
-          borderRadius: 20,
-          blur: 24,
-          boxShadow: aiGlow,
-          borderColor: selected ? AppColors.glassBorderAccent(brightness) : null,
-          onTap: widget.onTap,
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(18, 16, 18, 16),
-            child: _RouteCardBody(
-              route: route,
-              isAiPick: isAiPick,
-              levelColor: Fmt.trafficColor(route.trafficLevel),
+        child: Container(
+          decoration: BoxDecoration(
+            color: brightness == Brightness.dark
+                ? const Color(0xCC0A1F14)
+                : const Color(0xCCFFFFFF),
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(
+              color: selected
+                  ? const Color(0xFF00D26A)
+                  : Colors.transparent,
+              width: 1.5,
+            ),
+            boxShadow: aiGlow,
+          ),
+          child: Material(
+            color: Colors.transparent,
+            child: InkWell(
+              borderRadius: BorderRadius.circular(20),
+              onTap: widget.onTap,
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(18, 16, 18, 16),
+                child: _RouteCardBody(
+                  route: route,
+                  isAiPick: isAiPick,
+                  levelColor: Fmt.trafficColor(route.trafficLevel),
+                ),
+              ),
             ),
           ),
         ),
@@ -449,21 +435,21 @@ class _RouteCardBody extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(
                     horizontal: 10, vertical: 5),
                 decoration: BoxDecoration(
-                  color: scheme.primary.withValues(alpha: 0.15),
+                  color: const Color(0xFF00D26A),
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Icon(Icons.auto_awesome_rounded,
-                            size: 14, color: scheme.primary)
+                            size: 14, color: Colors.white)
                         .animate(
                             onPlay: (c) => c.repeat(reverse: true))
                         .fadeIn(duration: 900.ms, begin: 0.6),
                     const SizedBox(width: 4),
                     Text('AI Pick',
                         style: TextStyle(
-                            color: scheme.primary,
+                            color: Colors.white,
                             fontSize: 12,
                             fontWeight: FontWeight.w700)),
                   ],
