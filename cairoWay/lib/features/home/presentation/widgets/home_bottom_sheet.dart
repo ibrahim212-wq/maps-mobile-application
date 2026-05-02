@@ -14,11 +14,6 @@ import '../../../../shared/services/storage_service.dart';
 import '../../../../shared/widgets/glass_card.dart';
 import '../../../../shared/widgets/premium_button.dart';
 
-/// Persistent draggable bottom sheet sitting above the bottom navigation.
-///
-/// Peek state shows greeting + AI status + primary action. Expanding reveals
-/// recent destinations and saved places without overlapping the map's
-/// floating controls (it never grows beyond ~50%).
 class HomeBottomSheet extends ConsumerWidget {
   const HomeBottomSheet({super.key, required this.bottomNavHeight});
 
@@ -28,47 +23,54 @@ class HomeBottomSheet extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final mq = MediaQuery.of(context);
     final scheme = Theme.of(context).colorScheme;
+    final isLight = Theme.of(context).brightness == Brightness.light;
 
-    // Reserve space for: bottom-nav + safe-area inset.
     final reservedBottom = bottomNavHeight + mq.padding.bottom;
-    final minSize = 0.25;
-    final initialSize = 0.42;
-    final maxSize = 0.85;
+    const minSize = 0.25;
+    const initialSize = 0.42;
+    const maxSize = 0.85;
 
     return DraggableScrollableSheet(
       initialChildSize: initialSize,
       minChildSize: minSize,
       maxChildSize: maxSize,
       snap: true,
-      snapSizes: [0.42, 0.85],
+      snapSizes: const [0.42, 0.85],
       builder: (ctx, scrollCtrl) {
         return GlassContainer(
           borderRadius: 28,
           padding: EdgeInsets.zero,
-          child: ListView(
-            controller: scrollCtrl,
-            padding: EdgeInsets.fromLTRB(24, 16, 24, reservedBottom + 24),
-            physics: const ClampingScrollPhysics(),
-            children: [
-              Center(
-                child: Container(
-                  width: 40,
-                  height: 4,
-                  margin: const EdgeInsets.only(bottom: 20),
-                  decoration: BoxDecoration(
-                    color:
-                        scheme.onSurfaceVariant.withValues(alpha: 0.30),
-                    borderRadius: BorderRadius.circular(4),
+          child: Container(
+            decoration: BoxDecoration(
+              border: isLight
+                  ? Border.all(color: const Color(0xFF00A854), width: 1.5)
+                  : null,
+              borderRadius: BorderRadius.circular(28),
+            ),
+            child: ListView(
+              controller: scrollCtrl,
+              padding: EdgeInsets.fromLTRB(24, 16, 24, reservedBottom + 24),
+              physics: const ClampingScrollPhysics(),
+              children: [
+                Center(
+                  child: Container(
+                    width: 40,
+                    height: 4,
+                    margin: const EdgeInsets.only(bottom: 20),
+                    decoration: BoxDecoration(
+                      color: scheme.onSurfaceVariant.withValues(alpha: 0.30),
+                      borderRadius: BorderRadius.circular(4),
+                    ),
                   ),
                 ),
-              ),
-              const _GreetingHeader(),
-              const SizedBox(height: 20),
-              const _PrimaryActionRow(),
-              const SizedBox(height: 20),
-              const _BestTimeChip(),
-              const _RecentsSection(),
-            ],
+                const _GreetingHeader(),
+                const SizedBox(height: 20),
+                const _PrimaryActionRow(),
+                const SizedBox(height: 20),
+                const _BestTimeChip(),
+                const _RecentsSection(),
+              ],
+            ),
           ),
         ).animate().fadeIn(delay: 250.ms, duration: 400.ms);
       },

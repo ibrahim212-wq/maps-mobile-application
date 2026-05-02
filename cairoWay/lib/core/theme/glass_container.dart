@@ -56,8 +56,8 @@ class GlassContainer extends StatelessWidget {
         shadows = null;
       } else {
         backgroundColor = const Color(0x99F0F0F0);
-        borderColor = const Color(0x33FFFFFF);
-        borderWidth = 1.0;
+        borderColor = const Color(0xFF00A854);
+        borderWidth = 1.5;
         shadows = const [
           BoxShadow(color: Color(0x1A000000), blurRadius: 10, offset: Offset(0, 2)),
         ];
@@ -65,8 +65,8 @@ class GlassContainer extends StatelessWidget {
     } else if (isSmallButton) {
       if (isDark) {
         backgroundColor = const Color(0x66071510);
-        borderColor = const Color(0x4400A854);
-        borderWidth = 1.0;
+        borderColor = const Color(0xFF00A854);
+        borderWidth = 1.5;
         shadows = null;
       } else {
         backgroundColor = const Color(0x99F0F0F0);
